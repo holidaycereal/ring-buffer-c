@@ -52,7 +52,7 @@ bool rb_read(RingBuffer* buffer, int* out) {
     return true;
 }
 
-// a value is "garbage" if it has already been read
+// a value is "garbage" if it has already been read or was never initialised
 bool rb_value_is_garbage(RingBuffer buffer, int index) {
     if (rb_is_empty(buffer)) return true;
     if (rb_is_full(buffer)) return false;
