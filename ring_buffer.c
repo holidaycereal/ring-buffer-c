@@ -38,10 +38,11 @@ bool rb_is_empty(RingBuffer buffer) {
 }
 
 // write to the buffer if there is space
-void rb_write(RingBuffer* buffer, int value) {
-    if (rb_is_full(*buffer)) return;
+bool rb_write(RingBuffer* buffer, int value) {
+    if (rb_is_full(*buffer)) return false;
     buffer->start[buffer->writeIndex] = value;
     buffer->writeIndex = (buffer->writeIndex + 1) % buffer->capacity;
+    return true;
 }
 
 // read from the buffer if there is a value to be read
@@ -105,9 +106,8 @@ int main() {
     printf("empty\n");
 
     printf("\nwrite until full, wrapping around:\n");
-    for (int i = 4; !rb_is_full(*buffer); i++) {
+    for (int i = 4; rb_write(buffer, i); i++) {
         printf("write %d\t\t", i);
-        rb_write(buffer, i);
         rb_dump_state(*buffer);
         printf("\n");
     }
