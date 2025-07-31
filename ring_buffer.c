@@ -4,13 +4,13 @@
 
 typedef struct {
     int* start;
-    int capacity;
-    int writeIndex;
-    int readIndex;
+    size_t capacity;
+    size_t writeIndex;
+    size_t readIndex;
 } RingBuffer;
 
 // create a new ring buffer
-RingBuffer* rb_new(int capacity) {
+RingBuffer* rb_new(size_t capacity) {
     RingBuffer* buffer = malloc(sizeof(RingBuffer));
     buffer->start = calloc(capacity, sizeof(int));
     buffer->capacity = capacity;
@@ -54,7 +54,7 @@ bool rb_read(RingBuffer* buffer, int* out) {
 }
 
 // a value is "garbage" if it has already been read or was never initialised
-bool rb_value_is_garbage(RingBuffer buffer, int index) {
+bool rb_value_is_garbage(RingBuffer buffer, size_t index) {
     if (rb_is_empty(buffer)) return true;
     if (rb_is_full(buffer)) return false;
     // check for wrap-around
